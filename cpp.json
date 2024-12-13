@@ -1,0 +1,3 @@
+{
+    "platform": "ubuntu && (x64 || x86 || arm64)"
+}

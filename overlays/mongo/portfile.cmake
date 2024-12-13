@@ -1,0 +1,12 @@
+# Get the current target architecture
+if(VCPKG_TARGET_ARCHITECTURE STREQUAL "x64")
+    set(BINARY_URL "https://example.com/mybinary-x64.zip")
+elseif(VCPKG_TARGET_ARCHITECTURE STREQUAL "x86")
+    set(BINARY_URL "https://example.com/mybinary-x86.zip")
+elseif(VCPKG_TARGET_ARCHITECTURE STREQUAL "arm64")
+    set(BINARY_URL "https://example.com/mybinary-arm64.zip")
+elseif(VCPKG_TARGET_ARCHITECTURE STREQUAL "arm")
+    set(BINARY_URL "https://example.com/mybinary-arm.zip")
+else()
+    message(FATAL_ERROR "Unsupported architecture: ${VCPKG_TARGET_ARCHITECTURE}")
+endif()
