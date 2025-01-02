@@ -23,12 +23,10 @@ static void log_mongo_severity(std::string_view msg, std::string_view severity) 
 MongoDB::MongoDB():
 proc{nullptr},
 lockName{"mongodb"},
-showLogs{"ShowLogs"},
-pingInterval{"PingInterval"},
 connected{false},
 exePath{fe::appVcpkgStaticFileDir() / "mongo" / "release" / "bin" / "mongod"} {
-    addSetting(showLogs.setDefault(true));
-    addSetting(pingInterval.setDefault(1000));
+    addSetting("ShowLogs", showLogs.setDefault(true));
+    addSetting("PingInterval", pingInterval.setDefault(1000));
     outHandler = [&](const std::string& msg) {
         logmsg << msg;
         try {
