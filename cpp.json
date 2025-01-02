@@ -1,3 +1,27 @@
 {
-    "platform": "ubuntu && (x64 || x86 || arm64)"
+    "vcpkg-overlay-ports": [
+        "overlays/mongo"
+    ],
+    "dependencies": [
+        { "name": "mongo" },
+        {
+            "name": "mongo-cxx-driver",
+            "cmake":[
+                {
+                    "package": "mongocxx",
+                    "public-libs": ["mongo::mongocxx_static"]
+                },
+                {
+                    "package": "bsoncxx",
+                    "public-libs": ["mongo::mongocxx_static"]
+                }
+            ]
+        }
+    ],
+    "static-files": {
+        "vcpkg": [
+            "mongo/release/bin/mongod"
+        ]
+    },
+    "platform": "ubuntu"
 }

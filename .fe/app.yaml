@@ -1,0 +1,10 @@
+backend-dir: null
+compatibility: ^1.0.0-alpha.1
+dependencies: {}
+description: null
+docker-base: alpine
+frontend-dir: null
+icon: null
+name: null
+slug: mongo
+version: 1.0.0

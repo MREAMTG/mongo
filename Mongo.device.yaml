@@ -1,0 +1,8 @@
+test-only: True
+subsystems:
+  mongo: mongo.MongoDB
+  system:
+    class: mongo.System
+    parameters:
+      - db:
+          "std::string": mongo
