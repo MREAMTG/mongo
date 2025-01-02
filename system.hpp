@@ -15,7 +15,6 @@ public:
 
         auto client = mongo->make_client();
         auto db = mongo->admin_db(client);
-        fe::Logger::success(db.name());
         auto coll = db.create_collection("joeshmo");
         bsoncxx::document::value document = bsoncxx::from_json("{\"boom\": 7}");
         coll.insert_one(document.view());

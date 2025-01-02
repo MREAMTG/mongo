@@ -24,10 +24,14 @@ MongoDB::MongoDB():
 proc{nullptr},
 lockName{"mongodb"},
 connected{false},
+logEvent{"MongoLog"},
+startEvent{"MongoStart"},
+stopEvent{"MongoStop"},
 exePath{fe::appVcpkgStaticFileDir() / "mongo" / "release" / "bin" / "mongod"} {
     addSetting("ShowLogs", showLogs.setDefault(true));
     addSetting("PingInterval", pingInterval.setDefault(1000));
     outHandler = [&](const std::string& msg) {
+        fe::Logger::setThreadName("MongoOut");
         logmsg << msg;
         try {
             auto logstr = logmsg.str();
@@ -47,6 +51,10 @@ exePath{fe::appVcpkgStaticFileDir() / "mongo" / "release" / "bin" / "mongod"} {
                     log_mongo_severity(attr, severity);
             }
         } catch (...) {}
+    };
+    errHandler = [&](const std::string& msg) {
+        fe::Logger::setThreadName("MongoErr");
+        fe::Logger::error(msg);
     };
 }
 
@@ -76,7 +84,7 @@ void MongoDB::start() {
     proc = std::make_unique<fe::SingletonProcess>(lockName, exePath, args);
 
     proc->getOutEvent().addListener(outHandler);
-    proc->getErrEvent().addListener(outHandler);
+    proc->getErrEvent().addListener(errHandler);
     try {
         proc->start();
     } catch (const fe::AlreadyRunningException &ex) {}
@@ -95,6 +103,7 @@ mongocxx::database MongoDB::admin_db(mongocxx::client &client) const {
 
 void MongoDB::start_monitor() {
     monitor = std::jthread([this]() {
+        fe::Logger::setThreadName("MongoMonitor");
         mongocxx::client client = make_client();
         while(fe::Sys.operate()) {
             try {

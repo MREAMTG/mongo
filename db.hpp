@@ -29,6 +29,7 @@ class MongoDB: public fe::Subsystem {
     fe::Event<> startEvent;
     fe::Event<> stopEvent;
     fe::Listener<const std::string&> outHandler;
+    fe::Listener<const std::string&> errHandler;
 
     std::string lockName;
     fs::path exePath;
